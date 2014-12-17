@@ -1,0 +1,81 @@
+modeltype = BAMM
+
+##### Rate parameters
+## root process parameters (fixed for now)
+#lambdaInit0 = 0.05
+#lambdaShift0 = 0
+#muInit0 = 0.0
+
+#par_lambdaInit0 = 0.1
+
+#################################
+#################################
+# Rate parameters 
+# rmin: minimum net diversification rate for a new process
+rmin = 0.01
+
+# rmax: maximum net diversification rate for a new process
+rmax = 0.5
+
+# epsilon (relative extinction rate) for new processes
+epsmin = 0
+epsmax = 1
+
+# rInitLogscale:
+# Should the initial net diversification rate be
+#  drawn from a log-scale? 
+#  if so, should emphasize smaller values.
+#  Most large values will be rejected anyway, as they will produce 
+#   trees that are too large.
+
+rInitLogscale = 1
+
+
+
+#################################
+#################################
+ 
+# event rate for Poisson process
+eventRate = 0.01
+
+# max time for simulation
+#  tree will be simulated to this age
+maxTime = 100
+
+# max number of nodes
+maxNumberOfNodes = 10000
+
+# max and min number of taxa to include in the simulated tree
+mintaxa = 100
+maxtaxa = 2000
+
+
+# Max and min number of shifts
+minNumberOfShifts = 1
+maxNumberOfShifts = 20
+
+# max time for an event to occur:
+# If maxTime = 100 and maxTimeForEvent = 95,
+# this means that events (shifts) will only be permitted to occur
+# between absolute times 0 - 95.
+# This is to avoid an excess of shifts very close to the present
+maxTimeForEvent = 95
+ 
+
+#time increments for discrete-time approx during simulation
+inc = 0.1
+ 
+# number of simulations to perform 
+numberOfSims = 10
+ 
+# Where to write the output
+# eventfile stores event parameters in BAMM format
+eventfile = events.txt
+treefile = simtrees.txt 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
