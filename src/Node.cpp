@@ -17,6 +17,7 @@ Node::Node()
     
     _brlen = 0.0;
     _time = 0.0;
+    _tmp = 0.0;
     _isExtant = false;
     _isTip   = false;
     _nodeEvent = NULL;
@@ -31,6 +32,7 @@ Node::Node(Node* anc, double time, BranchEvent* be)
     _anc = anc;
     
     _brlen = 0.0;
+    _tmp = 0.0;
     _time = time;
     _isExtant = false;
     _isTip   = false;

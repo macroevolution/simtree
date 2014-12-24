@@ -21,6 +21,8 @@ private:
     Node*   _anc;
     double  _time;
     double  _brlen;
+    double  _tmp;
+    
     bool    _isExtant;
     bool    _isTip;
     
@@ -52,6 +54,9 @@ public:
 
     bool    getIsTip();
     void    setIsTip(bool x);
+    
+    double  getTmp();
+    void    setTmp(double x);
 
     BranchEvent* getNodeEvent();
     void    setNodeEvent(BranchEvent* x);
@@ -64,6 +69,17 @@ public:
 
 
 };
+
+inline void Node::setTmp(double x)
+{
+    _tmp = x;
+}
+
+inline double Node::getTmp()
+{
+    return _tmp;
+}
+
 
 inline void Node::setAnc(Node* x)
 {

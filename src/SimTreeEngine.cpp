@@ -34,10 +34,13 @@ SimTreeEngine::SimTreeEngine(Settings* settings, MbRandom* random)
     for (int i = 0; i < _numberOfSims; i++){
          _simtrees.push_back(getTreeInstance());
  
+        //_simtrees[i]->recursiveCheckTime();
+        //_simtrees[i]->checkBranchLengths();
+        
         std::cout << "tree " << i << " has << ";
         std::cout << _simtrees[i]->getNumberOfTips() << " >> tips";
         std::cout << "\tshifts: " << _simtrees[i]->getNumberOfShifts() << std::endl;
- 
+        
     }
     
     // Data output

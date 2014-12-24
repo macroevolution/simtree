@@ -66,7 +66,7 @@ SimTree::SimTree(MbRandom* random, Settings* settings)
             
     }
     if (muInit <= 0){
-        double eps = _random->uniformRv();
+        double eps = _random->uniformRv(_epsmin, _epsmax);
         muInit = eps * lambdaInit;
     }
     
@@ -104,7 +104,6 @@ SimTree::SimTree(MbRandom* random, Settings* settings)
         //std::cout << _root->getRandomTipRight(_root) << std::endl;
     }
  
-
     
 }
 
@@ -150,8 +149,15 @@ void SimTree::simulateStep(Node* p, std::string direction)
     double lambdainit = curEvent->getLambdaInit();
     double lambdashift = curEvent->getLambdaShift();
     double mu = curEvent->getMuInit();   
+
+    double local_inc = _inc;
+    
     
     while (notDone){
+    
+        if (curTime + _inc > _maxTime){
+            local_inc = _maxTime - curTime;
+        }
         
         // get current parameters:
         double elapsed = curTime - eventtime;
@@ -166,7 +172,7 @@ void SimTree::simulateStep(Node* p, std::string direction)
         
         dt = _random->exponentialRv(totalRate);
 
-        if (dt < _inc){
+        if (dt < local_inc ){
             // something happens
             curTime += dt;
             int eventtype = getEventType(lambda, mu, eventRate);
@@ -236,13 +242,13 @@ void SimTree::simulateStep(Node* p, std::string direction)
             
             
             
-        }else if ((curTime + _inc) < _maxTime){
+        }else if ((curTime + local_inc) < _maxTime){
             // Lineage reaches end of interval but not end of simulation period
             //    Nothing happens except time gets incremented by inc
             
             curTime += _inc;
         
-        }else if ((curTime + _inc) >= _maxTime){
+        }else if ((curTime + local_inc) >= _maxTime){
             // lineage reaches max time
             // Create new terminal node and set as tip.
             
@@ -388,10 +394,67 @@ void SimTree::getEventDataString(int index, std::ostream& ss)
 
 
 
+void SimTree::recursiveCheckTime()
+{
+    recursiveSetTime(getRoot());
+    
+    for (int i = 0; i < _nodes.size(); i++){
+        double t1 = _nodes[i]->getTime();
+        double t2 = _nodes[i]->getTmp();
+        
+        double dt = (double)fabs(t1 - t2);
+        
+        if (dt > 0.00001){
+            std::cout << _nodes[i] << "\t" << t1 << "\t" << t2 << std::endl;
+        }
+        
+    }
+
+}
 
 
 
 
+void SimTree::recursiveSetTime(Node * x)
+{
+    if (x == getRoot()){
+        x->setTmp(0.0);
+    }else{
+        double tm = x->getAnc()->getTmp() + x->getBrlen();
+        x->setTmp(tm);
+    }
+    if (x->getLfDesc() != NULL & x->getRtDesc() != NULL) {
+        recursiveSetTime(x->getLfDesc());
+        recursiveSetTime(x->getRtDesc());
+    }
+
+}
+
+
+void SimTree::checkBranchLengths()
+{
+    for (int i = 0; i < _nodes.size(); i++){
+        if (_nodes[i] != getRoot()){
+            double btemp = _nodes[i]->getTime() - _nodes[i]->getAnc()->getTime();
+            double dt = (double)fabs(_nodes[i]->getBrlen() - btemp );
+            if (dt > 0.001){
+                std::cout << _nodes[i]->getTime() << "\t" << _nodes[i]->getBrlen() << "\tNewBL:  ";
+                std::cout << btemp << std::endl;
+            }
+            
+            if (_nodes[i]->getBrlen() <= 0){
+                std::cout << "badBranchLength:\t" << _nodes[i]->getTime() << "\t";
+                std::cout << _nodes[i]->getBrlen() << "\tPar_age: " << _nodes[i]->getAnc()->getTime() <<  std::endl;
+        }
+        }
+
+
+        
+        
+    }
+
+
+}
 
 
 

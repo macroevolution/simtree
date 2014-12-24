@@ -47,24 +47,6 @@ int main(int argc, char * argv[])
  
     SimTreeEngine simengine(&mySettings, &myRNG);
     
-    //SimTree simtree(&myRNG, &mySettings);
- 
-    // Note that this causes a segfault if tree is bad.
-   
-    /*
-    
-    std::stringstream ss;
-    simtree.writeTree(simtree.getRoot(), ss);
-    ss << ";";
- 
-    
-    std::string outname = "out.tre";
-    std::ofstream outStream;
-    outStream.open(outname.c_str());
-    outStream  << ss.str() << std::endl;
-    outStream.close();
-    */
-    
     return 0;
     
     

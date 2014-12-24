@@ -70,6 +70,10 @@ public:
     int getNumberOfTips();
     int getNumberOfShifts();
     
+    void recursiveCheckTime();
+    void recursiveSetTime(Node * x);
+    void checkBranchLengths();
+
 };
 
 
