@@ -90,6 +90,7 @@ SimTree::SimTree(MbRandom* random, Settings* settings)
     _maxTimeForEvent = _settings->get<double>("maxTimeForEvent");
     _inc = _settings->get<double>("inc");
     
+    
     simulateStep(_root, "right");
  
     if (!_isTreeBad){
@@ -457,7 +458,16 @@ void SimTree::checkBranchLengths()
 }
 
 
-
+double SimTree::getTreeAge()
+{
+    double max_age = 0.0;
+    for (int i = 0; i < _nodes.size(); i++){
+        if (_nodes[i]->getTime() > max_age){
+            max_age = _nodes[i]->getTime();
+        }
+    }
+    return max_age;
+}
 
 
 

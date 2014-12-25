@@ -29,7 +29,8 @@ SimTreeEngine::SimTreeEngine(Settings* settings, MbRandom* random)
     _maxtaxa = _settings->get<int>("maxtaxa");
     _minNumberOfShifts = _settings->get<int>("minNumberOfShifts");
     _maxNumberOfShifts = _settings->get<int>("maxNumberOfShifts");
-    
+    _minTreeAge = _settings->get<double>("minTime");
+
     
     for (int i = 0; i < _numberOfSims; i++){
          _simtrees.push_back(getTreeInstance());
@@ -87,9 +88,11 @@ bool SimTreeEngine::isTreeValid(SimTree* x)
     
     int tips = x->getNumberOfTips();
     int shifts = x->getNumberOfShifts();
-    
+    double age = x->getTreeAge();
+        
     bool isGood = (tips >= _mintaxa & tips <= _maxtaxa
-                   & shifts >= _minNumberOfShifts & shifts <= _maxNumberOfShifts);
+                   & shifts >= _minNumberOfShifts & shifts <= _maxNumberOfShifts
+                   & age >= _minTreeAge);
         
     return isGood;
 }

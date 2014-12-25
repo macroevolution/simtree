@@ -93,6 +93,7 @@ void Settings::initializeGlobalSettings()
     addParameter("lambdaShift0", "-1", NotRequired);
     addParameter("muInit0", "-1", NotRequired);
     addParameter("maxTime", "-1");
+    addParameter("minTime", "0.0", NotRequired);
     addParameter("maxNumberOfNodes", "2000", NotRequired);
     addParameter("maxTimeForEvent", "-1", NotRequired);
     addParameter("overwrite", "1", NotRequired);

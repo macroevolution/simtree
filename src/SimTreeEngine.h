@@ -31,6 +31,7 @@ private:
     int _maxtaxa;
     int _minNumberOfShifts;
     int _maxNumberOfShifts;
+    double _minTreeAge;
     
     std::string _treefile;
     std::string _eventfile;

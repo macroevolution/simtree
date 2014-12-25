@@ -34,6 +34,7 @@ private:
     std::vector<Node*> _nodes;
     
     double  _maxTime;
+
     double  _maxTimeForEvent;
     int     _maxNumberOfNodes;
     
@@ -73,6 +74,8 @@ public:
     void recursiveCheckTime();
     void recursiveSetTime(Node * x);
     void checkBranchLengths();
+    
+    double getTreeAge();
 
 };
 
