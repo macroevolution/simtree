@@ -241,12 +241,22 @@ recursiveOrder <- function(phy, node){
 convertEventData <- function(truephy, paleophy, events, outname)
 {
  
+
+	vv <- NU.branching.times(paleophy, return.type = "begin.end")
+	node_times <- vv$end 
+ 	names(node_times) <- vv$edge[,2]
+ 	node_times <- c(0, node_times)
+ 	names(node_times)[1] <- as.character((length(vv$tip.label)+1))
+ 
 	root_age_true <- max(NU.branching.times(truephy));
-	root_age_paleo <- max(NU.branching.times(paleophy));
+	root_age_paleo <- max(vv$end)
 	deltaT <- round(root_age_true - root_age_paleo, digits=5);
 	dset <- truephy$tip.label;
 	
 	res <- NULL;
+	
+	# get node times
+	
 	
 	for (i in 1:nrow(events)){
 		
@@ -274,23 +284,33 @@ convertEventData <- function(truephy, paleophy, events, outname)
 		if (length(iset) == 0){
 			# Event gets dropped.	
 		}else if (length(iset) == 1){
-			tmp <- makeRowDF(1, iset, "NA", events$abstime[i], events$lambdainit[i], events$lambdashift[i], events$muinit[i], 0.0);
 			
+			# Need if/else to drop events that occur after a particular point in time.
+			
+			nt <- as.numeric(node_times[as.character(nn)])
+			
+			if (nt > events$abstime[i]){
+				tmp <- makeRowDF(1, iset, "NA", events$abstime[i], events$lambdainit[i], events$lambdashift[i], events$muinit[i], 0.0);				
+				if (is.null(res)){
+					res <- tmp;
+				}else{
+					res <- rbind(res, tmp);
+				}			
+				
+			}
+
 		}else{
 			span <- getSpanningTips(paleophy, node = getMRCA(paleophy, tip = iset));
  
 			tmp <- makeRowDF(1, span[1], span[2], events$abstime[i], events$lambdainit[i], events$lambdashift[i], events$muinit[i], 0.0);
-		}
-		
-		if (length(iset) > 0){
-			if (is.null(res)){
-				res <- tmp;
-			}else{
-				res <- rbind(res, tmp);
+			if (length(iset) > 0){
+				if (is.null(res)){
+					res <- tmp;
+				}else{
+					res <- rbind(res, tmp);
+				}			
 			}			
 		}
-
-		
 	}
 	
  	res$abstime <- res$abstime - deltaT;	
@@ -304,10 +324,21 @@ convertEventData <- function(truephy, paleophy, events, outname)
  	res$lambdainit[rmin] <- lam0;
  	res$muinit[rmin] <- mu0;
  	res$abstime[rmin] <- 0;
-
+ 	
+ 	
+ 	## fix the root here as well.
+ 	
+	res$leftchild[rmin] <- vv$tip.label[1];
+	res$rightchild[rmin] <- vv$tip.label[length(vv$tip.label)];
+ 	
+ 	## I think this is dropping (inappropriately) a very small number of 
+ 	## events that occur on branches leading to clades for which a 
+ 	##	 single sampled lineage with a new name (eg NN1) exist.
+ 
  	return(res);
  
 }
+ 
  
 
 makeRowDF <- function(g, lc, rc, at, li, ls, mi, ms){
