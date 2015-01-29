@@ -278,7 +278,8 @@ convertEventData <- function(truephy, paleophy, events, outname)
 			# Must be single:
 			iset <- intersect(truephy$tip.label[nn], paleophy$tip.label);
 		}
-		
+		# add in the collapsed clades:
+		iset <- c(iset, setdiff(paleophy$tip.label, truephy$tip.label))
 
 
 		if (length(iset) == 0){
@@ -286,8 +287,9 @@ convertEventData <- function(truephy, paleophy, events, outname)
 		}else if (length(iset) == 1){
 			
 			# Need if/else to drop events that occur after a particular point in time.
+			node <- which(paleophy$tip.label == iset)
 			
-			nt <- as.numeric(node_times[as.character(nn)])
+			nt <- as.numeric(node_times[as.character(node)])
 			
 			if (nt > events$abstime[i]){
 				tmp <- makeRowDF(1, iset, "NA", events$abstime[i], events$lambdainit[i], events$lambdashift[i], events$muinit[i], 0.0);				
