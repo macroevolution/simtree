@@ -287,7 +287,7 @@ FLAWED_convertEventData <- function(truephy, paleophy, events, outname)
 			
 			nt <- as.numeric(node_times[as.character(node)])
 			
-			if (nt > events$abstime[i] & ){
+			if (nt > events$abstime[i]){
 				tmp <- makeRowDF(1, iset, "NA", events$abstime[i], events$lambdainit[i], events$lambdashift[i], events$muinit[i], 0.0);				
 				if (is.null(res)){
 					res <- tmp;
