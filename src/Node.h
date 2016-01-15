@@ -32,6 +32,8 @@ private:
 
 public:
     Node();
+    Node(const Node&) = delete;
+    Node& operator=(const Node&) = delete;
     Node(Node* anc, double time, BranchEvent* be);
     
     void    setAnc(Node * x);

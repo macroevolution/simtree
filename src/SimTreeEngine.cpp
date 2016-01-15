@@ -15,10 +15,21 @@
 #include "MbRandom.h"
 
 
-SimTreeEngine::SimTreeEngine(Settings* settings, MbRandom* random)
+SimTreeEngine::SimTreeEngine(Settings* settings, MbRandom* random) :
+    _settings{settings},
+    _random{random},
+    _numberOfSims{0},
+    _BADMAX{0},
+    _mintaxa{0},
+    _maxtaxa{0},
+    _minNumberOfShifts{0},
+    _maxNumberOfShifts{0},
+    _minTreeAge{0.0},
+    _treefile{},
+    _eventfile{},
+    _simtrees{}
+
 {
-    _settings = settings;
-    _random = random;
     _numberOfSims = _settings->get<int>("numberOfSims");
     _treefile = _settings->get<std::string>("treefile");
     _eventfile = _settings->get<std::string>("eventfile");
@@ -77,6 +88,8 @@ SimTree* SimTreeEngine::getTreeInstance()
         
         }
     }
+    std::cout << "Should not get here, terminating" << std::endl;
+    exit(1);
 }
 
 
@@ -90,9 +103,9 @@ bool SimTreeEngine::isTreeValid(SimTree* x)
     int shifts = x->getNumberOfShifts();
     double age = x->getTreeAge();
         
-    bool isGood = (tips >= _mintaxa & tips <= _maxtaxa
-                   & shifts >= _minNumberOfShifts & shifts <= _maxNumberOfShifts
-                   & age >= _minTreeAge);
+    bool isGood = (tips >= _mintaxa && tips <= _maxtaxa
+                   && shifts >= _minNumberOfShifts && shifts <= _maxNumberOfShifts
+                   && age >= _minTreeAge);
         
     return isGood;
 }
