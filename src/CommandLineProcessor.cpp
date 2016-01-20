@@ -6,10 +6,12 @@
 
 
 CommandLineProcessor::CommandLineProcessor(int argc, char* argv[])
+ : _controlFileName{"control.txt"}, // Add general control file name:
+   _parameters{}
 {
     
-    // Add general control file name:
-    _controlFileName = "control.txt";
+
+
     
     // Start at argv[1] because argv[0] is the program name
     for (int i = 1; i < argc; i += 2) {

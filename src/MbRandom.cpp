@@ -49,10 +49,13 @@
  * \return Returns no value.
  * \throws Does not throw an error.
  */
-MbRandom::MbRandom(void) {
+MbRandom::MbRandom(void)
+  : seed{0},
+    initializedFacTable{false},
+    availableNormalRv{false},
+    extraNormalRv{0.0}
+{
     setSeed();
-    initializedFacTable = false;
-    availableNormalRv = false;
 }
 
 /*!
@@ -65,14 +68,17 @@ MbRandom::MbRandom(void) {
  * \return Returns no value.
  * \throws Does not throw an error.
  */
-MbRandom::MbRandom(long int x) {
+MbRandom::MbRandom(long int x)
+  : seed{0},
+    initializedFacTable{false},
+    availableNormalRv{false},
+    extraNormalRv{0.0}
+{
     if (x == -1) { // use clock
         setSeed();
     } else {
         setSeed(x);
     }
-    initializedFacTable = false;
-    availableNormalRv = false;
 }
 
 /*!
