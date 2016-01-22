@@ -10,33 +10,32 @@
 
 
 Node::Node()
+  : _lfDesc{nullptr},
+    _rtDesc{nullptr},
+    _anc{nullptr},
+    _time{0.0},
+    _brlen{0.0},
+    _tmp{0.0},
+    _isExtant{false},
+    _isTip{false},
+    _nodeEvent{nullptr},
+    _name{}
 {
-    _lfDesc = NULL;
-    _rtDesc = NULL;
-    _anc = NULL;
-    
-    _brlen = 0.0;
-    _time = 0.0;
-    _tmp = 0.0;
-    _isExtant = false;
-    _isTip   = false;
-    _nodeEvent = NULL;
-    
 }
 
 
 Node::Node(Node* anc, double time, BranchEvent* be)
+  : _lfDesc{nullptr},
+    _rtDesc{nullptr},
+    _anc{anc},
+    _time{time},
+    _brlen{0.0},
+    _tmp{0.0},
+    _isExtant{false},
+    _isTip{false},
+    _nodeEvent{be},
+    _name{}
 {
-    _lfDesc = NULL;
-    _rtDesc = NULL;
-    _anc = anc;
-    
-    _brlen = 0.0;
-    _tmp = 0.0;
-    _time = time;
-    _isExtant = false;
-    _isTip   = false;
-    _nodeEvent = be;
     
 }
 
@@ -45,7 +44,7 @@ std::string Node::getRandomTipRight(Node* x){
     
  
     std::string name;
-    if (x->getRtDesc() == NULL & x->getLfDesc() == NULL){
+    if (x->getRtDesc() == NULL && x->getLfDesc() == NULL){
         name = x->getName();
     }else{
         name = getRandomTipRight(x->getRtDesc());
@@ -58,7 +57,7 @@ std::string Node::getRandomTipLeft(Node* x){
      
     std::string name;
 
-    if (x->getRtDesc() == NULL & x->getLfDesc() == NULL){
+    if (x->getRtDesc() == NULL && x->getLfDesc() == NULL){
         name = x->getName();
     }else{
         name = getRandomTipLeft(x->getLfDesc());

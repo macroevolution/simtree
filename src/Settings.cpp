@@ -14,6 +14,8 @@
 
 Settings::Settings(const std::string& controlFilename,
     const std::vector<UserParameter>& commandLineParameters) :
+    _parameters{},
+    _userParameters{},
     _commandLineParameters(commandLineParameters)
 {
     readControlFile(controlFilename);

@@ -21,7 +21,6 @@ class Settings;
 
 class SimTree
 {
-    
 private:
     
     MbRandom* _random;
@@ -54,6 +53,8 @@ private:
 public:
     
     SimTree(MbRandom* random, Settings* settings);
+    SimTree(const SimTree&) = delete;
+    SimTree& operator=(const SimTree&) = delete;
     ~SimTree();
 
     void simulateStep(Node* p, std::string direction);

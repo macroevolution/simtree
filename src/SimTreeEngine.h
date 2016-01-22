@@ -41,6 +41,8 @@ private:
     
 public:
     SimTreeEngine(Settings* settings, MbRandom* random);
+    SimTreeEngine(const SimTreeEngine&) = delete;
+    SimTreeEngine& operator=(const SimTreeEngine&) = delete;
     ~SimTreeEngine();
     
     SimTree* getTreeInstance(void);

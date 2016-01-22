@@ -21,16 +21,25 @@
 
 
 
-SimTree::SimTree(MbRandom* random, Settings* settings)
+SimTree::SimTree(MbRandom* random, Settings* settings) :
+    _random{random},
+    _settings{settings},
+    _root{new Node},
+    _rootEvent{nullptr},
+    _eventSet{},
+    _nodes{},
+    _maxTime{0.0},
+    _maxTimeForEvent{0.0},
+    _maxNumberOfNodes{0},
+    _isTreeBad{false},
+    _inc{0.0},
+    _multipliermin{0.0},
+    _multipliermax{0.0},
+    _epsmin{0.0},
+    _epsmax{0.0},
+    _rmin{0.0},
+    _rmax{0.0}
 {
-    _random = random;
-    _settings = settings;
-    
-    _isTreeBad = false;
-    
-    //_root = NULL;
-    
-    _root = new Node;
     
     BranchEvent* be = new BranchEvent;
     _rootEvent = be;
@@ -352,7 +361,7 @@ int SimTree::getNumberOfTips()
 {
     int ctr = 0;
     for (int i = 0; i < (int)_nodes.size(); i++){
-        if (_nodes[i]->getLfDesc() == NULL & _nodes[i]->getRtDesc() == NULL){
+        if (_nodes[i]->getLfDesc() == NULL && _nodes[i]->getRtDesc() == NULL){
             ctr++;
         }
     }
@@ -399,7 +408,7 @@ void SimTree::recursiveCheckTime()
 {
     recursiveSetTime(getRoot());
     
-    for (int i = 0; i < _nodes.size(); i++){
+    for (int i = 0; i < static_cast<int>(_nodes.size()); i++){
         double t1 = _nodes[i]->getTime();
         double t2 = _nodes[i]->getTmp();
         
@@ -424,7 +433,7 @@ void SimTree::recursiveSetTime(Node * x)
         double tm = x->getAnc()->getTmp() + x->getBrlen();
         x->setTmp(tm);
     }
-    if (x->getLfDesc() != NULL & x->getRtDesc() != NULL) {
+    if (x->getLfDesc() != NULL && x->getRtDesc() != NULL) {
         recursiveSetTime(x->getLfDesc());
         recursiveSetTime(x->getRtDesc());
     }
@@ -434,7 +443,7 @@ void SimTree::recursiveSetTime(Node * x)
 
 void SimTree::checkBranchLengths()
 {
-    for (int i = 0; i < _nodes.size(); i++){
+    for (int i = 0; i < static_cast<int>(_nodes.size()); i++){
         if (_nodes[i] != getRoot()){
             double btemp = _nodes[i]->getTime() - _nodes[i]->getAnc()->getTime();
             double dt = (double)fabs(_nodes[i]->getBrlen() - btemp );
@@ -461,7 +470,7 @@ void SimTree::checkBranchLengths()
 double SimTree::getTreeAge()
 {
     double max_age = 0.0;
-    for (int i = 0; i < _nodes.size(); i++){
+    for (int i = 0; i < static_cast<int>(_nodes.size()); i++){
         if (_nodes[i]->getTime() > max_age){
             max_age = _nodes[i]->getTime();
         }
