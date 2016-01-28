@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG
 CFLAGS        = -m64 -pipe -g -Wall -W -fPIE $(DEFINES)
-CXXFLAGS      = -m64 -pipe -std=c++11 -Wall -Wextra -Weffc++ -g -Wall -W -fPIE $(DEFINES)
+CXXFLAGS      = -m64 -pipe -std=c++11 -Wall -Wextra -Weffc++ -Werror -g -Wall -W -fPIE $(DEFINES)
 INCPATH       = -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I../src -I.
 LINK          = g++
 LFLAGS        = -m64
