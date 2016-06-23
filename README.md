@@ -54,7 +54,7 @@ If simtree is not installed in a common location, you will need to specify its l
 ...if the control file is in a different location from the program, and simtree is in a directory called `/Applications`.
 
 
-#####Input<a input="input"></a>
+#####Input<a name="input"></a>
 The input values given to simtree are all stored in the control file. simtree comes with an example control file with a list of arguments that control different aspects of the simulation. Several arguments control the basic constraints of the simulations:
 
 	mintaxa = 100
@@ -84,7 +84,7 @@ There are also several parameters to control the number and names of the output 
 	eventful = events.txt
 	treefile = simtrees.txt
 
-#####Output files<a output="output"></a>
+#####Output files<a name="output"></a>
 simtree outputs two different files. One is a file with Newick style trees for each of the numberOfSims simulations. The other is a comma-separated file storing the location, timing and magnitude of the simulated shifts along each of the tree.
 
 The trees can be read into `R` using `read.tree()` from the `ape` package, and will generate an object of the class `multiPhylo`. Extinct tips are labeled “D#” while tips still extant at the end of the simulation run are labeled “A#”. So to create an extant-only tree:
