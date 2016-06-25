@@ -49,6 +49,8 @@ private:
     double _rmin;
     double _rmax;
     
+    double _lambda_mean;
+    double _mu_mean;
     
 public:
     

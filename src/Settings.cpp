@@ -110,6 +110,9 @@ void Settings::initializeGlobalSettings()
     addParameter("epsmin", "0", NotRequired);
     addParameter("epsmax", "1", NotRequired);
     
+    addParameter("lambdaExpMean", "-1", NotRequired);
+    addParameter("muExpMean", "-1", NotRequired);
+    
     addParameter("newlambdashiftmax", "0.0", NotRequired);
     //addParameter("par_lambdaInit0", "-1", NotRequired);
     

@@ -17,6 +17,7 @@
 #include "Settings.h"
 
 
+#define SAMPLE_EXPONENTIAL
 
 
 
@@ -61,6 +62,20 @@ SimTree::SimTree(MbRandom* random, Settings* settings) :
     double lambdaShift = _settings->get<double>("lambdaShift0");
     double muInit = _settings->get<double>("muInit0");
     
+    _lambda_mean = _settings->get<double>("lambdaExpMean");
+    _mu_mean = _settings->get<double>("muExpMean");
+
+#ifdef SAMPLE_EXPONENTIAL
+    
+    if (lambdaInit <= 0){
+        lambdaInit = _random->exponentialRv(_lambda_mean);
+        muInit = _random->exponentialRv(_mu_mean);
+    }
+    
+
+    
+#else
+    
     if (lambdaInit <= 0){
         double eps = _random->uniformRv(_epsmin, _epsmax);
         double r = 0.0;
@@ -74,14 +89,19 @@ SimTree::SimTree(MbRandom* random, Settings* settings) :
         muInit = lambdaInit * eps;
             
     }
+ 
     if (muInit <= 0){
         double eps = _random->uniformRv(_epsmin, _epsmax);
         muInit = eps * lambdaInit;
     }
     
+#endif
+    
     if (lambdaShift < 0){
         lambdaShift = 0.0;
     }
+    
+
     
     
     _rootEvent->setLambdaInit(lambdaInit);
@@ -228,14 +248,18 @@ void SimTree::simulateStep(Node* p, std::string direction)
 
                 
             }else if (eventtype == (int)3){
-            // Rate shift but no speciationp-extinction
-            
-            // Must deal with possibility of multiple branch
-            // shifts. These should be ignored: just retain
-            // the most recent one.
+            // Rate shift but no speciation-extinction
 
                 eventtime = curTime;
                 
+#ifdef SAMPLE_EXPONENTIAL
+                
+                lambdainit = _random->exponentialRv(_lambda_mean);
+                mu = _random->exponentialRv(_mu_mean);
+                lambdashift = 0.0;
+                
+#else
+ 
                 double new_r = _random->uniformRv(_rmin, _rmax);
                 double new_eps = _random->uniformRv(_epsmin, _epsmax);
     
@@ -243,6 +267,8 @@ void SimTree::simulateStep(Node* p, std::string direction)
                 lambdainit = new_r / (1 - new_eps);
                 mu = new_eps * lambdainit;
 
+#endif
+                
                 insertNewEvent = true;
                 
             }else{
