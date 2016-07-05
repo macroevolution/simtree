@@ -62,14 +62,14 @@ SimTree::SimTree(MbRandom* random, Settings* settings) :
     double lambdaShift = _settings->get<double>("lambdaShift0");
     double muInit = _settings->get<double>("muInit0");
     
-    _lambda_mean = _settings->get<double>("lambdaExpMean");
-    _mu_mean = _settings->get<double>("muExpMean");
+    _lambda_rate =  1 / _settings->get<double>("lambdaExpMean");
+    _mu_rate = 1 / _settings->get<double>("muExpMean");
 
 #ifdef SAMPLE_EXPONENTIAL
     
     if (lambdaInit <= 0){
-        lambdaInit = _random->exponentialRv(_lambda_mean);
-        muInit = _random->exponentialRv(_mu_mean);
+        lambdaInit = _random->exponentialRv(_lambda_rate);
+        muInit = _random->exponentialRv(_mu_rate);
     }
     
 
@@ -117,6 +117,11 @@ SimTree::SimTree(MbRandom* random, Settings* settings) :
     _maxTime = _settings->get<double>("maxTime");
     _maxNumberOfNodes = _settings->get<double>("maxNumberOfNodes");
     _maxTimeForEvent = _settings->get<double>("maxTimeForEvent");
+    
+    if (_maxTimeForEvent <= 0.0){
+        _maxTimeForEvent = _maxTime;
+    }
+    
     _inc = _settings->get<double>("inc");
     
     
@@ -254,8 +259,8 @@ void SimTree::simulateStep(Node* p, std::string direction)
                 
 #ifdef SAMPLE_EXPONENTIAL
                 
-                lambdainit = _random->exponentialRv(_lambda_mean);
-                mu = _random->exponentialRv(_mu_mean);
+                lambdainit = _random->exponentialRv(_lambda_rate);
+                mu = _random->exponentialRv(_mu_rate);
                 lambdashift = 0.0;
                 
 #else

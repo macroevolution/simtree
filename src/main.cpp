@@ -32,7 +32,12 @@ int main(int argc, char * argv[])
     // Use high-precision chronos library for seed.
     // Requires C++11.
     
-    long int seed = getPrecisionTime();
+    long int seed = mySettings.get<long int>("seed");
+    
+    if (seed == -1){
+        long int seed = getPrecisionTime();
+    }
+ 
     
     MbRandom myRNG;
     myRNG.setSeed(seed);

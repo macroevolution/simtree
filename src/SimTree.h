@@ -49,8 +49,8 @@ private:
     double _rmin;
     double _rmax;
     
-    double _lambda_mean;
-    double _mu_mean;
+    double _lambda_rate; //rate params of exponential distribution
+    double _mu_rate;
     
 public:
     
